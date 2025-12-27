@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const QuizStart = () => {
   const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(null);
   const [difficulty, setDifficulty] = useState("easy");
   const [amount, setAmount] = useState(5);
   const navigate = useNavigate();
@@ -14,6 +14,11 @@ const QuizStart = () => {
   }, []);
 
   const startQuiz = () => {
+    if (!category) {
+      alert("Please select a category");
+      return;
+    }
+
     navigate(
       `/quiz?amount=${amount}&category=${category}&difficulty=${difficulty}`
     );
@@ -37,7 +42,7 @@ const QuizStart = () => {
 
       <select
         className="w-full mb-3 p-2 border rounded"
-        onChange={(e) => setDifficulty(e.target.value)}
+        onChange={(e) => setCategory(e.target.value || null)}
       >
         <option value="easy">Easy</option>
         <option value="medium">Medium</option>

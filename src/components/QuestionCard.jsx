@@ -1,33 +1,30 @@
-const decode = (str) => {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = str;
-  return txt.value;
-};
+const QuestionCard = ({ question, current, total, onAnswer }) => {
+  if (!question) return null;
 
-const QuestionCard = ({ data, onAnswer, index, total }) => {
-  const answers = [...data.incorrect_answers, data.correct_answer].sort(
-    () => Math.random() - 0.5
-  );
+  const answers = [...question.incorrect_answers, question.correct_answer]
+    .sort(() => Math.random() - 0.5);
 
   return (
-    <div className="bg-white p-8 rounded-xl shadow-md w-96">
-      <p className="mb-2 text-gray-600">
-        Question {index + 1} of {total}
+    <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
+      <p className="text-sm text-gray-500 mb-2">
+        Question {current} of {total}
       </p>
 
-      <h2 className="font-semibold mb-4">
-        {decode(data.question)}
-      </h2>
+      <h3
+        className="text-lg font-semibold mb-4"
+        dangerouslySetInnerHTML={{ __html: question.question }}
+      />
 
-      {answers.map((ans, i) => (
-        <button
-          key={i}
-          onClick={() => onAnswer(ans === data.correct_answer)}
-          className="block w-full mb-2 p-2 border rounded hover:bg-gray-100"
-        >
-          {decode(ans)}
-        </button>
-      ))}
+      <div className="space-y-2">
+        {answers.map((answer, index) => (
+          <button
+            key={index}
+            onClick={() => onAnswer(answer === question.correct_answer)}
+            className="w-full p-2 border rounded hover:bg-blue-100"
+            dangerouslySetInnerHTML={{ __html: answer }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

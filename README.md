@@ -1,3 +1,21 @@
+# Quiz App
+
+A quiz application built with React and Tailwind CSS using the Open Trivia Database API.
+
+## Tech Stack
+- React
+- Tailwind CSS
+- Open Trivia Database API
+
+## Features
+- Select quiz category and difficulty
+- Answer multiple-choice questions
+- View final score
+
+## Setup
+npm install
+npm run dev
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

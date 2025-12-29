@@ -11,6 +11,7 @@ const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const hasLoadedRef = useRef(false);
@@ -18,8 +19,6 @@ const QuizPage = () => {
   const amount = searchParams.get("amount");
   const category = searchParams.get("category");
   const difficulty = searchParams.get("difficulty");
-
-  console.log("QuizPage params:", { amount, category, difficulty });
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -39,7 +38,6 @@ const QuizPage = () => {
         setError(null);
         hasLoadedRef.current = true;
         
-        console.log("Loading questions with params:", { amount, category, difficulty });
         const data = await fetchQuestions({
           amount: parseInt(amount),
           category: parseInt(category),
@@ -47,7 +45,6 @@ const QuizPage = () => {
         });
         
         if (data && data.length > 0) {
-          console.log("Questions loaded:", data.length);
           setQuestions(data);
         } else {
           setError("No questions found. Try different difficulty or category settings.");
@@ -110,6 +107,7 @@ const QuizPage = () => {
         <ScoreSummary
           score={score}
           total={questions.length}
+          results={results}
           onRestart={handleRestart}
         />
       </Layout>
@@ -122,16 +120,34 @@ const QuizPage = () => {
     ...current.incorrect_answers,
   ].sort(() => Math.random() - 0.5);
 
+  console.log("Current question:", currentIndex, current);
+  console.log("Answers:", answers);
+
   const handleNext = (selected) => {
-    if (selected === current.correct_answer) {
-      setScore(score + 1);
+    const current = questions[currentIndex];
+    const isCorrect = selected === current.correct_answer;
+    
+    if (isCorrect) {
+      setScore(prevScore => prevScore + 1);
     }
-    setCurrentIndex(currentIndex + 1);
+    
+    // Track the result
+    const result = {
+      question: current.question,
+      selectedAnswer: selected,
+      correctAnswer: current.correct_answer,
+      isCorrect,
+      allAnswers: [current.correct_answer, ...current.incorrect_answers]
+    };
+    
+    setResults(prevResults => [...prevResults, result]);
+    setCurrentIndex(prevIndex => prevIndex + 1);
   };
 
   return (
     <Layout>
       <QuestionCard
+        key={currentIndex}
         question={current.question}
         answers={answers}
         correctAnswer={current.correct_answer}

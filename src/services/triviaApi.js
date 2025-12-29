@@ -18,13 +18,11 @@ const getSessionToken = async () => {
   
   tokenPromise = (async () => {
     try {
-      console.log("Requesting session token...");
       const response = await fetch(`${BASE_URL}/api_token.php?command=request`);
       const data = await response.json();
       
       if (data.response_code === 0 && data.token) {
         sessionToken = data.token;
-        console.log("Session token obtained:", sessionToken);
         return sessionToken;
       } else {
         console.error("Failed to get token, response:", data);
@@ -57,10 +55,8 @@ const resetSessionToken = () => {
  * Fetch available quiz categories
  */
 const fetchCategories = async () => {
-  console.log("Fetching categories...");
   const response = await fetch(`${BASE_URL}/api_category.php`);
   const data = await response.json();
-  console.log("Categories response:", data);
   return data.trivia_categories;
 };
 
@@ -71,10 +67,8 @@ const fetchQuestions = async ({ amount, category, difficulty }) => {
   // First try without token to see if that works
   let url = `${BASE_URL}/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=multiple`;
   
-  console.log("Fetching questions with URL:", url);
-  let response = await fetch(url);
-  let data = await response.json();
-  console.log("API Response (no token):", data);
+  const response = await fetch(url);
+  const data = await response.json();
   
   // If we get rate limited, try with token
   if (data.response_code === 5) {
@@ -83,10 +77,8 @@ const fetchQuestions = async ({ amount, category, difficulty }) => {
     
     if (token) {
       url += `&token=${token}`;
-      console.log("Fetching with token URL:", url);
-      response = await fetch(url);
+      const response = await fetch(url);
       data = await response.json();
-      console.log("API Response (with token):", data);
     }
   }
   

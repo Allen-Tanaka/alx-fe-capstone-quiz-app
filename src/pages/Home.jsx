@@ -13,10 +13,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCategories().then((cats) => {
-      console.log("Categories loaded:", cats);
-      setCategories(cats);
-    });
+    fetchCategories().then(setCategories);
   }, []);
 
   const startQuiz = () => {

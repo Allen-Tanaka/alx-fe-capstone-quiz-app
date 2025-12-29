@@ -1,32 +1,43 @@
-const QuestionCard = ({ question, current, total, onAnswer }) => {
-  if (!question) return null;
+import { useState } from "react";
 
-  const answers = [...question.incorrect_answers, question.correct_answer]
-    .sort(() => Math.random() - 0.5);
+export default function QuestionCard({ question, answers, correctAnswer, onNext }) {
+  const [selected, setSelected] = useState(null);
 
   return (
-    <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-      <p className="text-sm text-gray-500 mb-2">
-        Question {current} of {total}
-      </p>
-
-      <h3
-        className="text-lg font-semibold mb-4"
-        dangerouslySetInnerHTML={{ __html: question.question }}
+    <div className="bg-white p-6 rounded-xl shadow-md max-w-xl w-full space-y-4">
+      <h2
+        className="text-lg font-semibold"
+        dangerouslySetInnerHTML={{ __html: question }}
       />
 
-      <div className="space-y-2">
-        {answers.map((answer, index) => (
-          <button
-            key={index}
-            onClick={() => onAnswer(answer === question.correct_answer)}
-            className="w-full p-2 border rounded hover:bg-blue-100"
-            dangerouslySetInnerHTML={{ __html: answer }}
-          />
-        ))}
+      <div className="space-y-3">
+        {answers.map((answer, index) => {
+          let style = "bg-gray-100 hover:bg-gray-200";
+          if (selected) {
+            if (answer === correctAnswer) style = "bg-green-500 text-white";
+            else if (answer === selected) style = "bg-red-500 text-white";
+          }
+
+          return (
+            <button
+              key={index}
+              disabled={selected}
+              onClick={() => setSelected(answer)}
+              className={`w-full p-3 rounded ${style}`}
+              dangerouslySetInnerHTML={{ __html: answer }}
+            />
+          );
+        })}
       </div>
+
+      {selected && (
+        <button
+          onClick={() => onNext(selected)}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Next Question
+        </button>
+      )}
     </div>
   );
-};
-
-export default QuestionCard;
+}

@@ -8,10 +8,15 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState("");
   const [difficulty, setDifficulty] = useState("easy");
+  const [amount, setAmount] = useState(5);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCategories().then(setCategories);
+    fetchCategories().then((cats) => {
+      console.log("Categories loaded:", cats);
+      setCategories(cats);
+    });
   }, []);
 
   const startQuiz = () => {
@@ -20,7 +25,9 @@ const Home = () => {
       return;
     }
 
-    navigate(`/quiz?amount=5&category=${category}&difficulty=${difficulty}`);
+    navigate(
+      `/quiz?amount=${amount}&category=${category}&difficulty=${difficulty}`
+    );
   };
 
   return (
@@ -31,6 +38,8 @@ const Home = () => {
         setCategory={setCategory}
         difficulty={difficulty}
         setDifficulty={setDifficulty}
+        amount={amount}
+        setAmount={setAmount}
         onStart={startQuiz}
       />
     </Layout>

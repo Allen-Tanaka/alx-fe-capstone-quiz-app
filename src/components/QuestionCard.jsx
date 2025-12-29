@@ -35,7 +35,7 @@ const QuestionCard = ({ question, answers, correctAnswer, onNext }) => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-md max-w-xl w-full space-y-4">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md max-w-xl w-full space-y-4">
       <h2
         className="text-lg font-semibold"
         dangerouslySetInnerHTML={{ __html: question }}
@@ -43,18 +43,18 @@ const QuestionCard = ({ question, answers, correctAnswer, onNext }) => {
 
       <div className="space-y-3">
         {answers.map((answer, index) => {
-          let style = "bg-gray-100 hover:bg-gray-200";
+          let style = "bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white";
 
           if (showResult) {
             if (answer === correctAnswer) {
-              style = "bg-green-500 text-white";
+              style = "bg-green-500 text-white dark:bg-green-600";
             } else if (answer === selected && answer !== correctAnswer) {
-              style = "bg-red-500 text-white";
+              style = "bg-red-500 text-white dark:bg-red-600";
             } else {
-              style = "bg-gray-200";
+              style = "bg-gray-200 dark:bg-gray-600 dark:text-gray-300";
             }
           } else if (selected === answer) {
-            style = "bg-blue-500 text-white"; // Selected answer in blue before submission
+            style = "bg-blue-500 text-white dark:bg-blue-600"; // Selected answer in blue before submission
           }
 
           return (
@@ -73,13 +73,13 @@ const QuestionCard = ({ question, answers, correctAnswer, onNext }) => {
         <div className="flex gap-3">
           <button
             onClick={handleNext}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
           >
             Submit Answer
           </button>
           <button
             onClick={() => setSelected(null)}
-            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600"
+            className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 dark:bg-gray-600 dark:hover:bg-gray-700"
           >
             Clear Selection
           </button>
@@ -91,7 +91,7 @@ const QuestionCard = ({ question, answers, correctAnswer, onNext }) => {
           <p className="text-lg font-semibold">
             {selected === correctAnswer ? "✅ Correct!" : "❌ Incorrect"}
           </p>
-          <p className="text-sm text-gray-600 mt-2">
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
             Moving to next question...
           </p>
         </div>

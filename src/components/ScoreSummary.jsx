@@ -1,6 +1,48 @@
 const ScoreSummary = ({ score, total, results, onRestart }) => {
   const percentage = Math.round((score / total) * 100);
 
+  const shareScore = async () => {
+    const shareData = {
+      title: 'Quiz Challenge!',
+      text: `I scored ${score}/${total} (${percentage}%) on this quiz! Can you beat my score?`,
+      url: window.location.origin
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log('Error sharing:', err);
+      }
+    } else {
+      // Fallback: copy to clipboard
+      const shareText = `${shareData.text} ${shareData.url}`;
+      navigator.clipboard.writeText(shareText).then(() => {
+        alert('Share link copied to clipboard!');
+      });
+    }
+  };
+
+  const shareOnTwitter = () => {
+    const text = `I scored ${score}/${total} (${percentage}%) on this quiz! Can you beat my score?`;
+    const url = encodeURIComponent(window.location.origin);
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${url}`;
+    window.open(twitterUrl, '_blank');
+  };
+
+  const shareOnFacebook = () => {
+    const url = encodeURIComponent(window.location.origin);
+    const text = encodeURIComponent(`I scored ${score}/${total} (${percentage}%) on this quiz! Can you beat my score?`);
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`;
+    window.open(facebookUrl, '_blank');
+  };
+
+  const shareOnWhatsApp = () => {
+    const text = `I scored ${score}/${total} (${percentage}%) on this quiz! Can you beat my score? ${window.location.origin}`;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-4xl space-y-6">
       <div className="text-center">
@@ -52,6 +94,39 @@ const ScoreSummary = ({ score, total, results, onRestart }) => {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="border-t pt-6">
+        <h2 className="text-xl font-semibold mb-4 text-center">Share Your Score! 🏆</h2>
+        <div className="flex flex-wrap justify-center gap-3">
+          <button
+            onClick={shareScore}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-semibold flex items-center gap-2"
+          >
+            📤 Share
+          </button>
+          <button
+            onClick={shareOnTwitter}
+            className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:bg-blue-500 font-semibold flex items-center gap-2"
+          >
+            🐦 Twitter
+          </button>
+          <button
+            onClick={shareOnFacebook}
+            className="bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-800 font-semibold flex items-center gap-2"
+          >
+            📘 Facebook
+          </button>
+          <button
+            onClick={shareOnWhatsApp}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 font-semibold flex items-center gap-2"
+          >
+            💬 WhatsApp
+          </button>
+        </div>
+        <p className="text-sm text-gray-500 text-center mt-3">
+          Challenge your friends to beat your score!
+        </p>
       </div>
 
       <div className="border-t pt-6 text-center">

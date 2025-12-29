@@ -146,15 +146,17 @@ const QuizPage = () => {
 
   return (
     <Layout>
-      <QuestionCard
-        key={currentIndex}
-        question={current.question}
-        answers={answers}
-        correctAnswer={current.correct_answer}
-        onNext={handleNext}
-      />
-      <div className="mt-4 text-center text-white">
-        <p>Question {currentIndex + 1} of {questions.length}</p>
+      <div className="flex flex-col items-center space-y-4">
+        <QuestionCard
+          key={currentIndex}
+          question={current.question}
+          answers={answers}
+          correctAnswer={current.correct_answer}
+          onNext={handleNext}
+        />
+        <div className="mt-2 text-center text-gray-800">
+          <p>Question {currentIndex + 1} of {questions.length}</p>
+        </div>
       </div>
     </Layout>
   );

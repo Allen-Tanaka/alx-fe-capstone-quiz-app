@@ -5,30 +5,35 @@ A modern, interactive quiz application built with React, featuring dynamic quest
 ## 🚀 Features
 
 - **Dynamic Quiz Generation**: Fetch questions from the Open Trivia Database API with customizable parameters
+- **Category Search**: Search and filter through 20+ trivia categories in real-time
 - **Category Selection**: Choose from 20+ trivia categories including Entertainment, Science, History, and more
 - **Difficulty Levels**: Select from Easy, Medium, or Hard difficulty levels
-- **Flexible Question Count**: Choose between 1-20 questions per quiz session
+- **Flexible Question Count**: Choose between 5-20 questions per quiz session
 - **Real-time Scoring**: Track correct answers and display final score with percentage
+- **Detailed Review**: Review all questions with correct/incorrect answers after completion
 - **Responsive Design**: Optimized for desktop and mobile devices using Tailwind CSS
 - **Error Handling**: Comprehensive error handling for API failures, rate limits, and network issues
 - **Loading States**: Smooth user experience with loading indicators during data fetching
 - **Single Page Application**: Fast navigation using React Router with client-side routing
+- **Session Management**: Automatic session token handling to prevent API rate limiting
 
 ## 🛠️ Technology Stack
 
 ### Frontend Framework
-- **React 18** - Modern JavaScript library for building user interfaces
-- **React Router DOM** - Declarative routing for React applications
+- **React 19** - Modern JavaScript library for building user interfaces
+- **React Router DOM v7** - Declarative routing for React applications
 
 ### Styling
 - **Tailwind CSS** - Utility-first CSS framework for rapid UI development
+- **PostCSS** - CSS processing tool
+- **Autoprefixer** - CSS vendor prefixing
 
 ### Build Tool & Development
 - **Vite** - Fast build tool with Hot Module Replacement (HMR)
 - **ESLint** - JavaScript linting utility for code quality
 
 ### API Integration
-- **Open Trivia Database API** - Free RESTful API for trivia questions
+- **Open Trivia Database API** - Free RESTful API for trivia questions with session token management
 
 ### Development Tools
 - **npm** - Package management and script running
@@ -38,7 +43,7 @@ A modern, interactive quiz application built with React, featuring dynamic quest
 
 Before running this application, ensure you have the following installed:
 
-- **Node.js** (version 16.0.0 or higher)
+- **Node.js** (version 18.0.0 or higher)
 - **npm** (comes with Node.js) or **yarn**
 - **Git** (for cloning the repository)
 
@@ -74,41 +79,47 @@ git --version
 
 ### Starting a Quiz
 
-1. **Select Category**: Choose from available trivia categories (e.g., General Knowledge, Entertainment, Science)
-2. **Choose Difficulty**: Select Easy, Medium, or Hard
-3. **Set Question Count**: Specify number of questions (1-20)
-4. **Start Quiz**: Click the "Start Quiz" button to begin
+1. **Search Categories** (Optional): Use the search bar to filter categories by keywords (e.g., "science", "movies", "history")
+2. **Select Category**: Choose from available trivia categories (e.g., General Knowledge, Entertainment, Science)
+3. **Choose Difficulty**: Select Easy, Medium, or Hard
+4. **Set Question Count**: Specify number of questions (5-20)
+5. **Start Quiz**: Click the "Start Quiz" button to begin
 
-### Taking the Quiz
+### Category Search
 
-- Read each multiple-choice question carefully
-- Click on your selected answer
-- The application automatically proceeds to the next question
-- Questions are shuffled randomly for each session
+- **Real-time Search**: Type keywords to instantly filter categories
+- **Search Examples**: "science", "movies", "history", "sports", "music"
+- **Result Counter**: Shows "X of Y categories found"
+- **No Results**: Friendly message when no categories match
+- **Clear Search**: One-click button to reset search and show all categories
+- **Smart Selection**: Automatically clears category selection if filtered out
 
 ### Viewing Results
 
-- After completing all questions, view your final score
-- See total correct answers and percentage score
-- Option to restart or return to home
+- After completing all questions, view your detailed score summary
+- See total correct answers, percentage score, and individual question review
+- Review each question with your selected answer and the correct answer
+- Option to take another quiz or return to category selection
 
 ## 🏗️ Project Structure
 
 ```
 src/
 ├── components/          # Reusable UI components
+│   ├── Layout.jsx       # Layout wrapper component
 │   ├── QuestionCard.jsx # Individual question display component
-│   ├── QuizStart.jsx    # Quiz configuration form
+│   ├── QuizStart.jsx    # Quiz configuration form with search
 │   └── ScoreSummary.jsx # Results display component
 ├── pages/               # Route-based page components
-│   ├── Home.jsx         # Landing page with quiz setup
-│   ├── Quiz.jsx         # Main quiz interface
-│   └── Results.jsx      # Score display page
+│   ├── Home.jsx         # Landing page with quiz setup and search
+│   └── QuizPage.jsx     # Main quiz interface with questions
 ├── services/            # API integration and data services
 │   └── triviaApi.js     # Open Trivia Database API client
 ├── App.jsx              # Main application component with routing
 ├── main.jsx             # Application entry point
-└── index.css            # Global styles and Tailwind imports
+├── index.css            # Global styles and Tailwind imports
+└── assets/
+    └── react.svg        # React logo (unused)
 ```
 
 ## 🔌 API Reference
@@ -125,28 +136,38 @@ Returns available trivia categories.
 
 #### Questions Endpoint
 ```
-GET https://opentdb.com/api.php?amount={count}&category={id}&difficulty={level}&type=multiple
+GET https://opentdb.com/api.php?amount={count}&category={id}&difficulty={level}&type=multiple&token={token}
 ```
 Parameters:
-- `amount`: Number of questions (1-20)
+- `amount`: Number of questions (5-20)
 - `category`: Category ID (optional)
 - `difficulty`: easy|medium|hard
 - `type`: multiple (multiple choice questions)
+- `token`: Session token (automatically managed)
+
+#### Session Token Management
+The application automatically manages session tokens to prevent rate limiting:
+- **Request Token**: `GET https://opentdb.com/api_token.php?command=request`
+- **Reset Token**: `GET https://opentdb.com/api_token.php?command=reset&token={token}`
 
 #### Response Codes
 - `0`: Success
 - `1`: No Results
 - `2`: Invalid Parameter
+- `3`: Session Token Not Set
+- `4`: Session Token Empty
 - `5`: Rate Limit Exceeded
 
 ## 🧪 Error Handling
 
 The application includes comprehensive error handling:
 
-- **Rate Limiting**: Displays user-friendly message when API rate limit is exceeded
+- **Rate Limiting**: Automatic session token management prevents API rate limiting
+- **Search Functionality**: User-friendly messages when no categories match search terms
 - **Network Errors**: Handles connection failures with retry options
 - **Invalid Responses**: Graceful handling of malformed API responses
 - **Loading States**: Prevents user interaction during data fetching
+- **Session Management**: Automatic token refresh and cleanup
 
 ## 🚀 Deployment
 
@@ -210,4 +231,4 @@ If you encounter any issues or have questions:
 
 ---
 
-**Built with ❤️ using React and Tailwind CSS**
+**Built by Allen Muzorera using React and Tailwind CSS**

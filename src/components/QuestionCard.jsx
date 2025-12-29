@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function QuestionCard({ question, answers, correctAnswer, onNext }) {
+const QuestionCard = ({ question, answers, correctAnswer, onNext }) => {
   const [selected, setSelected] = useState(null);
 
   return (
@@ -13,6 +13,7 @@ export default function QuestionCard({ question, answers, correctAnswer, onNext 
       <div className="space-y-3">
         {answers.map((answer, index) => {
           let style = "bg-gray-100 hover:bg-gray-200";
+
           if (selected) {
             if (answer === correctAnswer) style = "bg-green-500 text-white";
             else if (answer === selected) style = "bg-red-500 text-white";
@@ -40,4 +41,6 @@ export default function QuestionCard({ question, answers, correctAnswer, onNext 
       )}
     </div>
   );
-}
+};
+
+export default QuestionCard;

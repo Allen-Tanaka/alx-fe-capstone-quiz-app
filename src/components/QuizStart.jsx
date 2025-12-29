@@ -12,7 +12,7 @@ const QuizStart = ({
   onStart,
 }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md w-full max-w-md space-y-4">
+    <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-md space-y-4">
       <h1 className="text-2xl font-bold text-center">Quiz App</h1>
 
       {/* Search Bar */}

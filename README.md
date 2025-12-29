@@ -10,7 +10,9 @@ A modern, interactive quiz application built with React, featuring dynamic quest
 - **Difficulty Levels**: Select from Easy, Medium, or Hard difficulty levels
 - **Flexible Question Count**: Choose between 5-20 questions per quiz session
 - **Real-time Scoring**: Track correct answers and display final score with percentage
+- **Progress Indicator**: Shows current question number and total (e.g., "Question 3 of 10") during quiz
 - **Detailed Review**: Review all questions with correct/incorrect answers after completion
+- **Social Sharing**: Share quiz scores on social media platforms (Twitter, Facebook, WhatsApp) and challenge friends
 - **Responsive Design**: Optimized for desktop and mobile devices using Tailwind CSS
 - **Error Handling**: Comprehensive error handling for API failures, rate limits, and network issues
 - **Loading States**: Smooth user experience with loading indicators during data fetching
@@ -20,24 +22,24 @@ A modern, interactive quiz application built with React, featuring dynamic quest
 ## 🛠️ Technology Stack
 
 ### Frontend Framework
-- **React 19** - Modern JavaScript library for building user interfaces
+- **React 19** - Modern JavaScript library for building user interfaces with hooks
 - **React Router DOM v7** - Declarative routing for React applications
 
-### Styling
+### Styling & UI
 - **Tailwind CSS** - Utility-first CSS framework for rapid UI development
-- **PostCSS** - CSS processing tool
-- **Autoprefixer** - CSS vendor prefixing
+- **PostCSS** - CSS processing tool with Autoprefixer for vendor prefixing
 
 ### Build Tool & Development
-- **Vite** - Fast build tool with Hot Module Replacement (HMR)
-- **ESLint** - JavaScript linting utility for code quality
+- **Vite** - Fast build tool with Hot Module Replacement (HMR) and optimized production builds
+- **ESLint** - JavaScript linting utility for code quality and consistency
 
 ### API Integration
-- **Open Trivia Database API** - Free RESTful API for trivia questions with session token management
+- **Open Trivia Database API** - Free RESTful API for trivia questions with automatic session token management
+- **Web Share API** - Native sharing functionality with social media platform fallbacks
 
 ### Development Tools
 - **npm** - Package management and script running
-- **Git** - Version control system
+- **Git** - Version control system for collaborative development
 
 ## 📋 Prerequisites
 
@@ -99,27 +101,36 @@ git --version
 - After completing all questions, view your detailed score summary
 - See total correct answers, percentage score, and individual question review
 - Review each question with your selected answer and the correct answer
+- **Share Your Score**: Use social sharing buttons to share results on Twitter, Facebook, or WhatsApp
+- **Challenge Friends**: Share your score and challenge others to beat it
 - Option to take another quiz or return to category selection
+
+### Quiz Progress
+
+- **Progress Indicator**: Shows current question number during quiz (e.g., "Question 3 of 10")
+- **Real-time Updates**: Progress updates automatically as you advance through questions
+- **Visual Feedback**: Clear indication of quiz completion status
 
 ## 🏗️ Project Structure
 
 ```
 src/
 ├── components/          # Reusable UI components
-│   ├── Layout.jsx       # Layout wrapper component
-│   ├── QuestionCard.jsx # Individual question display component
-│   ├── QuizStart.jsx    # Quiz configuration form with search
-│   └── ScoreSummary.jsx # Results display component
+│   ├── Layout.jsx       # Main layout wrapper with background styling
+│   ├── QuestionCard.jsx # Individual question display with answer selection
+│   ├── QuizStart.jsx    # Quiz configuration form with category search
+│   └── ScoreSummary.jsx # Results display with social sharing features
 ├── pages/               # Route-based page components
-│   ├── Home.jsx         # Landing page with quiz setup and search
-│   └── QuizPage.jsx     # Main quiz interface with questions
+│   ├── Home.jsx         # Landing page with quiz setup and category search
+│   └── QuizPage.jsx     # Main quiz interface with progress indicator
 ├── services/            # API integration and data services
-│   └── triviaApi.js     # Open Trivia Database API client
+│   └── triviaApi.js     # Open Trivia Database API client with session management
 ├── App.jsx              # Main application component with routing
+├── App.css              # Additional application styles
 ├── main.jsx             # Application entry point
-├── index.css            # Global styles and Tailwind imports
-└── assets/
-    └── react.svg        # React logo (unused)
+├── index.css            # Global styles and Tailwind CSS imports
+└── assets/              # Static assets
+    └── react.svg        # React logo 
 ```
 
 ## 🔌 API Reference
@@ -168,6 +179,26 @@ The application includes comprehensive error handling:
 - **Invalid Responses**: Graceful handling of malformed API responses
 - **Loading States**: Prevents user interaction during data fetching
 - **Session Management**: Automatic token refresh and cleanup
+
+## 📤 Social Sharing
+
+Share your quiz achievements and challenge friends with built-in social sharing features:
+
+### Sharing Options
+- **Native Share**: Uses device's native sharing (mobile) or clipboard fallback (desktop)
+- **Twitter**: Direct sharing to Twitter with pre-filled tweet
+- **Facebook**: Facebook sharing dialog with score and challenge message
+- **WhatsApp**: WhatsApp sharing with personalized message
+
+### Share Message Format
+```
+"I scored 8/10 (80%) on this quiz! Can you beat my score? [App URL]"
+```
+
+### Browser Support
+- **Modern Browsers**: Web Share API for native device sharing
+- **Legacy Browsers**: Platform-specific URL schemes with fallback to clipboard
+- **Mobile Optimized**: Enhanced sharing experience on mobile devices
 
 ## 🚀 Deployment
 
@@ -231,4 +262,6 @@ If you encounter any issues or have questions:
 
 ---
 
-**Built by Allen Muzorera using React and Tailwind CSS**
+**Built by Allen Muzorera using React 19, Tailwind CSS, and Vite**
+
+*Last updated: 29 December 2025*

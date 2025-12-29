@@ -3,18 +3,24 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Layout from "../components/Layout";
 import QuestionCard from "../components/QuestionCard";
 import ScoreSummary from "../components/ScoreSummary";
+import { fetchQuestions } from "../services/triviaApi";
 
-export default function QuizPage() {
+const QuizPage = () => {
   const [questions, setQuestions] = useState([]);
-  const [index, setIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const navigate = useNavigate();
+
   const { search } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`https://opentdb.com/api.php${search}&type=multiple`)
-      .then(res => res.json())
-      .then(data => setQuestions(data.results));
+    const params = new URLSearchParams(search);
+
+    fetchQuestions({
+      amount: params.get("amount"),
+      category: params.get("category"),
+      difficulty: params.get("difficulty"),
+    }).then(setQuestions);
   }, [search]);
 
   if (!questions.length) {
@@ -25,7 +31,7 @@ export default function QuizPage() {
     );
   }
 
-  if (index >= questions.length) {
+  if (currentIndex >= questions.length) {
     return (
       <Layout>
         <ScoreSummary
@@ -37,20 +43,29 @@ export default function QuizPage() {
     );
   }
 
-  const q = questions[index];
-  const answers = [...q.incorrect_answers, q.correct_answer].sort(() => Math.random() - 0.5);
+  const currentQuestion = questions[currentIndex];
+  const answers = [
+    ...currentQuestion.incorrect_answers,
+    currentQuestion.correct_answer,
+  ].sort(() => Math.random() - 0.5);
+
+  const handleNext = (selected) => {
+    if (selected === currentQuestion.correct_answer) {
+      setScore((prev) => prev + 1);
+    }
+    setCurrentIndex((prev) => prev + 1);
+  };
 
   return (
     <Layout>
       <QuestionCard
-        question={q.question}
+        question={currentQuestion.question}
         answers={answers}
-        correctAnswer={q.correct_answer}
-        onNext={(selected) => {
-          if (selected === q.correct_answer) setScore(prev => prev + 1);
-          setIndex(prev => prev + 1);
-        }}
+        correctAnswer={currentQuestion.correct_answer}
+        onNext={handleNext}
       />
     </Layout>
   );
-}
+};
+
+export default QuizPage;

@@ -3,10 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  base: '/',
   server: {
     allowedHosts: [
       'allow-all',
-      'devserver-main--stalwart-dango-a7ec09.netlify.app',
     ],
   },
 })

@@ -5,8 +5,8 @@ export default defineConfig({
   plugins: [react()],
   server: {
     allowedHosts: [
+      'allow-all',
       'devserver-main--stalwart-dango-a7ec09.netlify.app',
-      'https://69551fea324bd80008c2fed7--stalwart-dango-a7ec09.netlify.app/',
     ],
   },
 })
